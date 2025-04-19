@@ -40,16 +40,43 @@ def id_counter():
    new_id=  read_file("./count.txt")
    return new_id
 
-
-if len(sys.argv) > 1 :
-  if sys.argv[1]=="add":
-    id=   id_counter()
-    data=  {"id":id,"description":sys.argv[2],"status":"todo","createdAt":time,"updatedAt":None}
-    add_task(data)
+def update(id,data):
+  tasks=  read_file("./tasks.json")
+  parsed_tasks=  json.loads(tasks)
+  if str(id) in parsed_tasks:
+    
+   parsed_tasks[str(id)]["description"]= data
+   parsed_tasks[str(id)]["updatedAt"] =time
+   write_file(parsed_tasks,"./tasks.json")
+   print("task updated succesfully")
   else:
-    print("please correct the syntax")  
+    print("invalid task id")
+     
+  
+print(len(sys.argv))
+print(sys.argv)
+
+
+if len(sys.argv) >  1 :
+  if sys.argv[1]=="add":
+    if len(sys.argv )==3 :
+     id=   id_counter()
+     data=  {"id":id,"description":sys.argv[2],"status":"todo","createdAt":time,"updatedAt":None}
+     add_task(data)
+    else:
+        print("incorrect input format")
+  elif sys.argv[1]=="update":
+    if len(sys.argv) == 4   :
+      update(sys.argv[2],sys.argv[3])
+    else:
+       print("incorrect input format")
+  else:
+    print(f"the provided  action {sys.argv[1]} cant be performed")     
+       
+      
+    
 else:
-  print("please proide an action to perform")    
+  print("please provide an action to perform")    
   
     
 
