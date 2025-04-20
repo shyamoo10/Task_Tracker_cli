@@ -72,19 +72,21 @@ def status_changer(id,status):
   else:
     print("there is no such tasks with that id ")   
 
-def task_list()  :
+def task_list(sts=False)  :
   tasks= read_file("./tasks.json")
   parsed_tasks=  json.loads(tasks)
   for key  in parsed_tasks:
-    print(parsed_tasks[key]["description"])
-  
-def task_list_sts(sts):
- tasks=  read_file("./tasks.json")
- parsed_tasks=  json.loads(tasks)
- for key in parsed_tasks:
-   if  parsed_tasks[key]["status"]== sts:
+    if sts==False:
      print(parsed_tasks[key]["description"])
-     
+    elif parsed_tasks[key]["status"]==sts:
+      print(parsed_tasks[key]["description"])
+    else:
+      print("no tasks") 
+      return  
+      
+      
+  
+
   
       
 
@@ -107,10 +109,13 @@ if len(sys.argv) >  1 :
     status_changer(sys.argv[2],sys.argv[1])
   elif  sys.argv[1]=="mark-done":
       status_changer(sys.argv[2],sys.argv[1])
-  elif sys.argv[1]=="list" and len(sys.argv)==2:
-    task_list()
-  elif (sys.argv[2]=="done"  or sys.argv[2]=="in-progress" or sys.argv[2]=="todo") :
-    task_list_sts(sys.argv[2])
+  elif sys.argv[1]=="list":
+    if len(sys.argv)==2:
+      
+     task_list()
+    else:
+      task_list(sys.argv[2]) 
+  
       
       
      
